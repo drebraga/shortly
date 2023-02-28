@@ -56,6 +56,18 @@ export const getUrlById = async (req, res) => {
 export const openUrlByShorter = async (req, res) => {
     try {
 
+        const short = req.params.shortUrl
+
+        const { rows: url, rowCount } = await db.query(`
+            SELECT url
+            FROM urls
+            WHERE "shortUrl" = $1
+        `, [short]);
+
+        if (rowCount === 0) return res.sendStatus(404);
+
+        return res.redirect(url[0].url)
+
     } catch (error) {
         return res.status(500).send(error.message)
     }
