@@ -14,7 +14,7 @@ urlRouter.get("/urls/open/:shortUrl");
 urlRouter.post("/urls/shorten", 
     schemaValidate(urlSchema), 
     checkURL(), 
-    checkToken(), 
+    checkToken(),
     urlShorter);
 
 urlRouter.delete("/urls/:id");
