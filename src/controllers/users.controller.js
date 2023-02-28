@@ -17,9 +17,9 @@ export const singIn = async (req, res) => {
         const { id, password: hash } = user[0];
 
         bcrypt.compare(password, hash, async function (err, result) {
-            if (err) return res.sendStatus(401);
+            if (!result) return res.sendStatus(401);
             if (result) {
-                
+
                 const { rowCount: checkSession } = await db.query(`
                     SELECT id FROM sessions WHERE "userId" = $1
                 `, [id]);
@@ -43,10 +43,20 @@ export const singIn = async (req, res) => {
 };
 
 export const singUp = async (req, res) => {
+
     const { name, email, password } = req.body
     const saltRounds = 10;
 
     try {
+        const { rowCount: userExists } = await db.query(`
+                SELECT email 
+                FROM users
+                WHERE email = $1
+            `, [email]);
+
+        console.log(userExists)
+
+        if (userExists !== 0) return res.sendStatus(409);
 
         bcrypt.hash(password, saltRounds, async function (err, hash) {
             if (err) return console.log(err);
