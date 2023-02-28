@@ -49,18 +49,16 @@ export const singUp = async (req, res) => {
 
     try {
         const { rowCount: userExists } = await db.query(`
-                SELECT email 
+                SELECT * 
                 FROM users
                 WHERE email = $1
             `, [email]);
 
-        console.log(userExists)
-
         if (userExists !== 0) return res.sendStatus(409);
 
-        bcrypt.hash(password, saltRounds, async function (err, hash) {
+        bcrypt.hash(password, saltRounds, function (err, hash) {
             if (err) return console.log(err);
-            await db.query(`
+            db.query(`
                 INSERT INTO users (
                     name, email, password
                 ) 
