@@ -9,7 +9,7 @@ const checkURL = (schema) => {
             next();
 
         } catch (err) {
-            return res.sendStatus(402);
+            return res.sendStatus(422);
         }
     }
 };

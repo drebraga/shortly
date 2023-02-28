@@ -62,7 +62,18 @@ export const openUrlByShorter = async (req, res) => {
 };
 
 export const deleteUrlById = async (req, res) => {
+
+    const id = req.params.id;
+
     try {
+
+        await db.query(`
+            DELETE
+            FROM urls
+            WHERE id = $1
+        `, [id]);
+
+        return res.sendStatus(204);
 
     } catch (error) {
         return res.status(500).send(error.message)
