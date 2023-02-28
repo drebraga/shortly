@@ -31,7 +31,22 @@ export const urlShorter = async (req, res) => {
 };
 
 export const getUrlById = async (req, res) => {
+
+    const id = req.params.id;
+
     try {
+
+        const { rows: response, rowCount: exists } = await db.query(`
+            SELECT id, "shortUrl", url
+            FROM urls
+            WHERE id = $1
+        `, [id]);
+
+        if (exists > 0) {
+            return res.send(response[0]);
+        } else {
+            return res.sendStatus(404);
+        }
 
     } catch (error) {
         return res.status(500).send(error.message)
