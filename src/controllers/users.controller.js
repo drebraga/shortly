@@ -35,7 +35,7 @@ export const singIn = async (req, res) => {
                         VALUES ($1, $2)
                     `, [id, token]);
 
-        return res.send(token);
+        return res.send({ token });
 
     } catch (error) {
         return res.status(500).send(error.message)
