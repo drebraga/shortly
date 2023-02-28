@@ -19,10 +19,11 @@ export const singIn = async (req, res) => {
         bcrypt.compare(password, hash, async function (err, result) {
             if (err) return res.sendStatus(401);
             if (result) {
+                
                 const { rowCount: checkSession } = await db.query(`
                     SELECT id FROM sessions WHERE "userId" = $1
                 `, [id]);
-                console.log(checkSession)
+
                 checkSession > 0 ?
                     await db.query(`
                         UPDATE sessions SET token = $1 WHERE "userId" = $2
@@ -31,6 +32,7 @@ export const singIn = async (req, res) => {
                         INSERT INTO sessions("userId", token)
                         VALUES ($1, $2)
                     `, [id, token]);
+
                 return res.send(token);
             }
         });

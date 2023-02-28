@@ -18,7 +18,7 @@ const checkUser = (type) => {
             next();
 
         } catch (error) {
-            return res.sendStatus(500);
+            return res.status(500).send(error.message)
         }
     };
 };
