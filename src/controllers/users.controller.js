@@ -48,23 +48,15 @@ export const singUp = async (req, res) => {
     const saltRounds = 10;
 
     try {
-        const { rowCount: userExists } = await db.query(`
-                SELECT * 
-                FROM users
-                WHERE email = $1
-            `, [email]);
 
-        if (userExists !== 0) return res.sendStatus(409);
+        const hash = bcrypt.hash(password, saltRounds);
 
-        bcrypt.hash(password, saltRounds, function (err, hash) {
-            if (err) return console.log(err);
-            db.query(`
+        await db.query(`
                 INSERT INTO users (
                     name, email, password
                 ) 
                 VALUES ($1, $2, $3)
-            `, [name, email, hash]);
-        });
+        `, [name, email, hash]);
 
         return res.sendStatus(201);
 

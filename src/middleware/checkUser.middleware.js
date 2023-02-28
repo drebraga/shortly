@@ -12,10 +12,8 @@ const checkUser = (type) => {
                 WHERE email = $1
             `, [email]);
 
-            console.log(userExists, type)
-
-            if (userExists !== 0 && type === "singUp") return res.sendStatus(409);
-            if (userExists === 0 && type === "singIn") return res.sendStatus(401);
+            if (userExists !== 0 && type === "singup") return res.sendStatus(409);
+            if (userExists === 0 && type === "singin") return res.sendStatus(401);
 
             next();
 

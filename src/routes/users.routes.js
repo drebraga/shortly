@@ -10,8 +10,8 @@ userRouter.get("/users/me");
 
 userRouter.get("/ranking");
 
-userRouter.post("/signup", schemaValidate(userSignUpSchema), singUp);
+userRouter.post("/signup", schemaValidate(userSignUpSchema), checkUser("singup"), singUp);
 
-userRouter.post("/signin", schemaValidate(userSignInSchema), checkUser("singIn"), singIn);
+userRouter.post("/signin", schemaValidate(userSignInSchema), checkUser("singin"), singIn);
 
 export default userRouter;
