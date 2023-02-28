@@ -7,7 +7,7 @@ export const userSignUpSchema = Joi.object({
             .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'br'] } })
             .required(),
     password: Joi.string().required(),
-    confirmPassword: Joi.ref('password').required()
+    confirmPassword: Joi.ref('password')
 });
 
 export const userSignInSchema = Joi.object({

@@ -7,7 +7,7 @@ const schemaValidate = (schema) => {
             next();
 
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
             return res.sendStatus(422);
         }
     }
