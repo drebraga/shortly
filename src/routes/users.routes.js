@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { singIn, singUp } from "../controllers/users.controller.js";
+import { singIn, singUp, getUser } from "../controllers/users.controller.js";
 import schemaValidate from "../middleware/schema.validation.js";
 import { userSignUpSchema, userSignInSchema } from "../schemas/users.schema.js";
 import checkUser from "../middleware/checkUser.middleware.js"
+import checkToken from "../middleware/checkToken.middleware.js"
 
 const userRouter = Router();
 
-userRouter.get("/users/me");
+userRouter.get("/users/me", checkToken(), getUser);
 
 userRouter.get("/ranking");
 

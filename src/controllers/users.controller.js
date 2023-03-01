@@ -65,8 +65,37 @@ export const singUp = async (req, res) => {
     }
 };
 
-export const getUsers = async (req, res) => {
+export const getUser = async (req, res) => {
+
+    const { userId } = res.locals.user;
+    let totalVisits = 0;
+
     try {
+
+        const { rows: name } = await db.query(`
+            SELECT name
+            FROM users
+            WHERE id = $1
+        `, [userId]);
+
+        const { rows: urls } = await db.query(`
+            SELECT *
+            FROM urls
+            WHERE "userId" = $1
+        `, [userId]);
+
+
+        urls.map(e => totalVisits = totalVisits + e.visitCount);
+
+
+        const response = {
+            id: userId,
+            name: name[0].name,
+            visitCount: totalVisits,
+            shortenedUrls: urls
+        }
+
+        return res.send(response);
 
     } catch (error) {
         return res.status(500).send(error.message)
