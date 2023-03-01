@@ -4,7 +4,7 @@ const checkShort = () => {
     return async (req, res, next) => {
         try {
 
-            const id = req.params.id
+            const id = req.params.id;
             const user = res.locals.user;
 
             const { rows: short, rowCount: shortExists } = await db.query(`
@@ -19,7 +19,7 @@ const checkShort = () => {
             next();
 
         } catch (error) {
-            return res.status(500).send(error.message)
+            return res.status(500).send(error.message);
         }
     };
 };

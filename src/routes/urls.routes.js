@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { urlShorter, getUrlById, openUrlByShorter, deleteUrlById } from "../controllers/urls.controller.js";
+import {
+    urlShorter,
+    getUrlById,
+    openUrlByShorter,
+    deleteUrlById
+} from "../controllers/urls.controller.js";
 import checkToken from "../middleware/checkToken.middleware.js";
 import { urlSchema } from "../schemas/urls.schema.js";
 import schemaValidate from "../middleware/schema.validation.js";

@@ -1,4 +1,4 @@
-const checkURL = (schema) => {
+const checkURL = () => {
     return async (req, res, next) => {
         try {
 
@@ -9,7 +9,7 @@ const checkURL = (schema) => {
             next();
 
         } catch (err) {
-            return res.sendStatus(422);
+            return res.status(422).send(err.message);
         }
     }
 };

@@ -1,11 +1,12 @@
 import db from "../database/database.connection.js";
 import { customAlphabet } from "nanoid";
+import { stripHtml } from "string-strip-html";
 
 export const urlShorter = async (req, res) => {
 
     const nanoid = customAlphabet("abcdefghijklmnopqrstuvxywz1234567890", 8);
     const shortUrl = nanoid();
-    const { url } = req.body;
+    const url = stripHtml(req.body.url.trim()).result;
     const { userId } = res.locals.user;
 
     try {
@@ -26,7 +27,7 @@ export const urlShorter = async (req, res) => {
         return res.status(201).send(response[0]);
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
 
@@ -49,14 +50,14 @@ export const getUrlById = async (req, res) => {
         }
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
 
 export const openUrlByShorter = async (req, res) => {
     try {
 
-        const short = req.params.shortUrl
+        const short = req.params.shortUrl;
 
         const { rows: url, rowCount } = await db.query(`
             SELECT url
@@ -75,7 +76,7 @@ export const openUrlByShorter = async (req, res) => {
         return res.redirect(url[0].url);
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
 
@@ -94,6 +95,6 @@ export const deleteUrlById = async (req, res) => {
         return res.sendStatus(204);
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };

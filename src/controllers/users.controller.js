@@ -1,6 +1,7 @@
 import db from "../database/database.connection.js";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
+import { stripHtml } from "string-strip-html";
 
 export const singIn = async (req, res) => {
 
@@ -17,8 +18,6 @@ export const singIn = async (req, res) => {
         const { id, password: hash } = user[0];
 
         const isCorrect = bcrypt.compareSync(password, hash);
-
-        console.log(isCorrect)
 
         if (!isCorrect) return res.sendStatus(401);
 
@@ -38,18 +37,21 @@ export const singIn = async (req, res) => {
         return res.send({ token });
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
 
 export const singUp = async (req, res) => {
 
-    const { name, email, password } = req.body
+    const user = req.body;
     const saltRounds = 10;
+
+    const name = stripHtml(user.name.trim()).result;
+    const email = stripHtml(user.email.trim()).result;
 
     try {
 
-        const hash = bcrypt.hashSync(password, saltRounds);
+        const hash = bcrypt.hashSync(user.password, saltRounds);
 
         await db.query(`
                 INSERT INTO users (
@@ -93,12 +95,12 @@ export const getUser = async (req, res) => {
             name: name[0].name,
             visitCount: totalVisits,
             shortenedUrls: urls
-        }
+        };
 
         return res.send(response);
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
 
@@ -120,6 +122,6 @@ export const getRanking = async (req, res) => {
         return res.send(response);
 
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send(error.message);
     }
 };
