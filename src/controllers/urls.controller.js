@@ -11,20 +11,20 @@ export const urlShorter = async (req, res) => {
 
     try {
 
-        await db.query(`
+        const { rows: returnID } = await db.query(`
             INSERT INTO urls(
                 "userId", "shortUrl", url
             ) VALUES
                 ($1, $2, $3)
+            RETURNING id
         `, [userId, shortUrl, url]);
 
-        const { rows: response } = await db.query(`
-            SELECT id, "shortUrl"
-            FROM urls
-            WHERE "shortUrl" = $1
-        `, [shortUrl]);
+        const response = {
+            id: returnID[0].id,
+            shortUrl
+        };
 
-        return res.status(201).send(response[0]);
+        return res.status(201).send(response);
 
     } catch (error) {
         return res.status(500).send(error.message);
