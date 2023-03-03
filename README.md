@@ -2,4 +2,4 @@
 
 deploy link: 
 
-https://shortly-api-8lfu.onrender.com
+https://shortly-cpgj.onrender.com
